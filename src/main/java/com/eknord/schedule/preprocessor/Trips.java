@@ -1,5 +1,6 @@
 package com.eknord.schedule.preprocessor;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -110,18 +111,27 @@ public class Trips {
         // The number of trips starting at A and ending at C with exactly 4 stops. In the
         // sample data below, there are three such trips: A to C (via B,C,D); A to C (via
         // D,C,D); and A to C (via D,E,B).
-        // TODO
         try {
             System.out.print("Output #7: ");
-            for (int i = 0; i < 10; i++) {
-                String src = "A";
-                String dest = "C";
-                boolean[] discovered = new boolean[100];
-                Stack<String> path = new Stack<>();
-                if (isReachable(src, dest, 0, discovered, path)) {
-                    System.out.println("The complete path is " + path);
+            String src = "A";
+            String dest = "C";
+            boolean[] isVisited = new boolean[100];
+            ArrayList<String> pathList = new ArrayList<>();
+            ArrayList<String> allPaths = new ArrayList<>();
+    
+            // add source to path[]
+            pathList.add(src);
+    
+            // Call recursive utility
+            printAllPathsUtil(src, dest, isVisited, pathList, allPaths);
+
+            int routes = 0;
+            for (String s : allPaths) {
+                if (s.length() == 15) {
+                    routes++;
                 }
             }
+            System.out.println(routes);
         } catch (NumberFormatException nfe) {
             System.out.println("NO SUCH ROUTE");
         }
@@ -208,6 +218,36 @@ public class Trips {
             System.out.println("NO SUCH ROUTE");
         }
     }
+
+    private void printAllPathsUtil(String src, String dest, boolean[] isVisited, List<String> localPathList, List<String> allPaths) {
+ 
+        if (src.equalsIgnoreCase(dest)) {
+            // System.out.println(localPathList);
+            allPaths.add(localPathList.toString());
+            // if match found then no need to traverse more till depth
+            return;
+        }
+ 
+        // Mark the current node
+        isVisited[src.charAt(0)] = true;
+ 
+        for (Leg l : directedGraph.get(src)) {
+            if (!isVisited[l.getEndCity().charAt(0)]) {
+                // store current node
+                // in path[]
+                localPathList.add(l.getEndCity());
+                printAllPathsUtil(l.getEndCity(), dest, isVisited, localPathList, allPaths);
+ 
+                // remove current node
+                // in path[]
+                localPathList.remove(l.getEndCity());
+            }
+        }
+ 
+        // Mark the current node
+        isVisited[src.charAt(0)] = false;
+    }
+ 
 
     private boolean isReachable(String src, String dest, int loopNumber, boolean[] discovered, Stack<String> path) {
         discovered[src.charAt(0)] = true;
