@@ -1,6 +1,5 @@
 package com.eknord.schedule.preprocessor;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -103,7 +102,26 @@ public class Trips {
         // TODO
         try {
             System.out.print("Output #6: ");
-            System.out.println(getDistance("A", "E") + getDistance("E", "D"));
+            String src = "C";
+            String dest = "C";
+            boolean[] isVisited = new boolean[100];
+            ArrayList<String> pathList = new ArrayList<>();
+            ArrayList<String> allPaths = new ArrayList<>();
+    
+            // add source to path[]
+            pathList.add(src);
+    
+            // Call recursive utility
+            printAllPathsUtil(src, dest, isVisited, pathList, allPaths);
+
+            int routes = 0;
+            for (String s : allPaths) {
+                System.out.println("s: " + s);
+                if (s.length() == 12) {
+                    routes++;
+                }
+            }
+            System.out.println(routes);
         } catch (NumberFormatException nfe) {
             System.out.println("NO SUCH ROUTE");
         }
@@ -137,16 +155,41 @@ public class Trips {
         }
 
         // The length of the shortest route (in terms of distance to travel) from A to C.
-        // TODO
         try {
             System.out.print("Output #8: ");
             String src = "A";
             String dest = "C";
-            boolean[] discovered = new boolean[100];
-            Stack<String> path = new Stack<>();
-            if (isReachable(src, dest, 0, discovered, path)) {
-                System.out.println("The complete path is " + path);
+            boolean[] isVisited = new boolean[100];
+            ArrayList<String> pathList = new ArrayList<>();
+            ArrayList<String> allPaths = new ArrayList<>();
+    
+            // add source to path[]
+            pathList.add(src);
+    
+            // Call recursive utility
+            printAllPathsUtil(src, dest, isVisited, pathList, allPaths);
+
+            String shortestRoute = "";
+            int distance = 0;
+            for (String s : allPaths) {
+                if (s.length() < shortestRoute.length() || shortestRoute.equalsIgnoreCase("")) {
+                    shortestRoute = s;
+                    shortestRoute = shortestRoute.replace(",", "")
+                        .replace("[", "")
+                        .replace("]", "")
+                        .replace(" ", "");
+                    int tempDistance = 0;
+                    for (int i = 0; i < shortestRoute.length() - 1; i++) {
+                        tempDistance += getDistance(String.valueOf(shortestRoute.charAt(i)), String.valueOf(shortestRoute.charAt(i+1)));
+                    }
+                    if (distance < tempDistance) {
+                        distance = tempDistance;
+                    }
+                    shortestRoute = s;
+                }
             }
+            
+            System.out.println(distance);
         } catch (NumberFormatException nfe) {
             System.out.println("NO SUCH ROUTE");
         }
