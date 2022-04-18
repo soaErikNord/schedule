@@ -112,7 +112,7 @@ public class Trips {
             pathList.add(src);
     
             // Call recursive utility
-            printAllPathsUtil(src, dest, isVisited, pathList, allPaths);
+            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
 
             int routes = 0;
             for (String s : allPaths) {
@@ -141,7 +141,7 @@ public class Trips {
             pathList.add(src);
     
             // Call recursive utility
-            printAllPathsUtil(src, dest, isVisited, pathList, allPaths);
+            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
 
             int routes = 0;
             for (String s : allPaths) {
@@ -167,7 +167,7 @@ public class Trips {
             pathList.add(src);
     
             // Call recursive utility
-            printAllPathsUtil(src, dest, isVisited, pathList, allPaths);
+            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
 
             String shortestRoute = "";
             int distance = 0;
@@ -200,11 +200,37 @@ public class Trips {
             System.out.print("Output #9: ");
             String src = "B";
             String dest = "B";
-            boolean[] discovered = new boolean[100];
-            Stack<String> path = new Stack<>();
-            if (isReachable(src, dest, 0, discovered, path)) {
-                System.out.println("The complete path is " + path);
+            boolean[] isVisited = new boolean[100];
+            ArrayList<String> pathList = new ArrayList<>();
+            ArrayList<String> allPaths = new ArrayList<>();
+    
+            // add source to path[]
+            pathList.add(src);
+    
+            // Call recursive utility
+            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
+
+            String shortestRoute = "";
+            int distance = 0;
+            for (String s : allPaths) {
+                if (s.length() < shortestRoute.length() || shortestRoute.equalsIgnoreCase("")) {
+                    shortestRoute = s;
+                    shortestRoute = shortestRoute.replace(",", "")
+                        .replace("[", "")
+                        .replace("]", "")
+                        .replace(" ", "");
+                    int tempDistance = 0;
+                    for (int i = 0; i < shortestRoute.length() - 1; i++) {
+                        tempDistance += getDistance(String.valueOf(shortestRoute.charAt(i)), String.valueOf(shortestRoute.charAt(i+1)));
+                    }
+                    if (distance < tempDistance) {
+                        distance = tempDistance;
+                    }
+                    shortestRoute = s;
+                }
             }
+            
+            System.out.println(distance);
         } catch (NumberFormatException nfe) {
             System.out.println("NO SUCH ROUTE");
         }
@@ -262,13 +288,15 @@ public class Trips {
         }
     }
 
-    private void printAllPathsUtil(String src, String dest, boolean[] isVisited, List<String> localPathList, List<String> allPaths) {
+    private void printAllPathsUtil(String src, String dest, boolean[] isVisited, List<String> localPathList, List<String> allPaths, int loopNumber) {
  
-        if (src.equalsIgnoreCase(dest)) {
+        if (loopNumber > 0 && src.equalsIgnoreCase(dest)) {
             // System.out.println(localPathList);
             allPaths.add(localPathList.toString());
             // if match found then no need to traverse more till depth
             return;
+        // } else {
+        //     allPaths.add(localPathList.toString());
         }
  
         // Mark the current node
@@ -279,7 +307,7 @@ public class Trips {
                 // store current node
                 // in path[]
                 localPathList.add(l.getEndCity());
-                printAllPathsUtil(l.getEndCity(), dest, isVisited, localPathList, allPaths);
+                printAllPathsUtil(l.getEndCity(), dest, isVisited, localPathList, allPaths, 1);
  
                 // remove current node
                 // in path[]
