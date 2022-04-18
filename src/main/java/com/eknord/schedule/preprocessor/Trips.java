@@ -242,47 +242,19 @@ public class Trips {
         try {
             System.out.print("Output #10: ");
 
-            Set<Leg> cLegs = directedGraph.get("C");
-            Iterator<Leg> legSet = cLegs.iterator();
-
-            Map<String, Set<Leg>> allCRoutes = new HashMap<>();
-            allCRoutes.put("C", cLegs);
-
             String src = "C";
-            String dest = "B";
-            boolean[] discovered = new boolean[100];
-            Stack<String> path = new Stack<>();
-            if (isReachable(src, dest, 0, discovered, path)) {
-                System.out.println("Path exists from vertex " + src + " to vertex " + dest);
-                System.out.println("The complete path is " + path);
-            }
-
-            // this.getAllRoutesForDestination(allCRoutes, )
+            String dest = "C";
+            boolean[] isVisited = new boolean[100];
+            ArrayList<String> pathList = new ArrayList<>();
+            ArrayList<String> allPaths = new ArrayList<>();
+    
+            // add source to path[]
+            pathList.add(src);
+    
+            // Call recursive utility
+            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
             
-
-            while (legSet.hasNext()) {
-                Leg newLeg = legSet.next();
-                System.out.println("Leg: " + newLeg.getStartCity() + newLeg.getEndCity());
-                Set<Leg> nextLeg = directedGraph.get(newLeg.getEndCity());
-                allCRoutes.put(newLeg.getEndCity(), nextLeg);
-            //     allCRoutes.put(newLeg.getEndCity(), directedGraph.get(newLeg.getEndCity()));
-            //     // Iterator<Leg> nextLegIterator = nextLeg.iterator();
-            //     // while (nextLegIterator.hasNext()) {
-            //     //     Leg newLeg1 = nextLegIterator.next();
-            //     //     Set<Leg> nextLeg1 = directedGraph.get(newLeg1.getEndCity());
-            //     //     allCRoutes.put(newLeg1.getStartCity(), nextLeg1);
-            //     // }
-            }
-
-            for (Map.Entry<String, Set<Leg>> entry : allCRoutes.entrySet()) {
-                Iterator<Leg> itr = entry.getValue().iterator();
-                while (itr.hasNext()) {
-                    Leg newLeg = itr.next();
-                    System.out.print("(" + entry.getKey() + " ——> " + newLeg.getEndCity() + ")\t");
-                }
-            }
-
-            System.out.println(getDistance("A", "E") + getDistance("E", "D"));
+            System.out.println(allPaths);
         } catch (NumberFormatException nfe) {
             System.out.println("NO SUCH ROUTE");
         }
@@ -336,22 +308,6 @@ public class Trips {
         path.pop();
         return false;
     }
-
-    // private void getAllRoutesForDestination(Map<String, Set<Leg>> allCRoutes, boolean b) {
-    //     while (legSet.hasNext()) {
-    //         Leg newLeg = legSet.next();
-    //         System.out.println("Leg: " + newLeg.getStartCity() + newLeg.getEndCity());
-    //         Set<Leg> nextLeg = directedGraph.get(newLeg.getEndCity());
-    //         allCRoutes.put(newLeg.getEndCity(), nextLeg);
-    //     //     allCRoutes.put(newLeg.getEndCity(), directedGraph.get(newLeg.getEndCity()));
-    //     //     // Iterator<Leg> nextLegIterator = nextLeg.iterator();
-    //     //     // while (nextLegIterator.hasNext()) {
-    //     //     //     Leg newLeg1 = nextLegIterator.next();
-    //     //     //     Set<Leg> nextLeg1 = directedGraph.get(newLeg1.getEndCity());
-    //     //     //     allCRoutes.put(newLeg1.getStartCity(), nextLeg1);
-    //     //     // }
-    //     }
-    // }
 
     private int getDistance(String startCity, String endCity) throws NumberFormatException {
         Iterator<Leg> legSet = directedGraph.get(startCity).iterator();
