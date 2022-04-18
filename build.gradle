@@ -19,6 +19,7 @@ dependencies {
 	implementation 'org.apache.camel.springboot:camel-spring-boot-starter:3.16.0'
 	implementation 'org.apache.camel.springboot:camel-jackson-starter:3.16.0'
 	implementation 'org.apache.camel.springboot:camel-servlet-starter:3.16.0'
+	implementation 'org.apache.camel.springboot:camel-jsonpath-starter:3.16.0'
 	
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'

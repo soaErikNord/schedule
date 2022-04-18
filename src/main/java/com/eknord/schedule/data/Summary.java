@@ -25,12 +25,17 @@ public class Summary {
     private Map<String, Object> additionalProperties = new HashMap<String, Object>();
 
     public Summary() {
-        
+
     }
 
     public Summary(List<String> summary) {
         super();
         this.summary = summary;
+    }
+
+    @JsonProperty("summary")
+    public List<String> getSummary() {
+        return summary;
     }
 
     @JsonProperty("summary")

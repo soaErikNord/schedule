@@ -27,6 +27,11 @@ public class Api {
     }
 
     @JsonProperty("graph")
+    public String getGraph() {
+        return graph;
+    }
+
+    @JsonProperty("graph")
     public void setGraph(String graph) {
         this.graph = graph;
     }

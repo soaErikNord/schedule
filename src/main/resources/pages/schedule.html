@@ -13,49 +13,51 @@
                 <div>
                     <b>Commuter Schedule</b>
                 </div>
-
-                <form>
-                    <label for="graph"><span>Graph: <span class="required">*</span></span>
-                        <input id="graph" type="text" class="input-field" name="graph" value="AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7"/>
-                    </label>
-
-                    <label for="button"><span> </span>
-                        <button type="button" onclick="scheduleApi()">Calculate!</button>
-                    </label>
-                </form>
-
-                Request:<br />
-                <p id="request"></p><br />
-                Reply:<br />
-                <p id="reply"></p>
             </div>
 
-            <script type="text/javascript">
-                function scheduleApi() {
-                    const data = {
-                        graph: document.getElementById("graph").innerHTML.value
-                    };
+            <form>
+                <label for="graph"><span>Graph: <span class="required">*</span></span>
+                    <input id="graph" type="text" class="input-field" name="graph" value="AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7"/>
+                </label>
 
-                    document.getElementById("request").innerHTML = JSON.stringify(data);
-                    document.getElementById("reply").innerHTML = "Scheduling!  Please Standby ...";
+                <label for="button"><span> </span>
+                    <button type="button" onclick="scheduleApi()">Calculate!</button>
+                </label>
+            </form>
 
-                    fetch('/api/apis/schedule', {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json'
-                        },
-                        body: JSON.stringify(data),
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log('Success:', data);
-                            document.getElementById("reply").innerHTML = JSON.stringify(data);
-                        })
-                        .catch((error) => {
-                            console.error('Error:', error);
-                        })
-                }
-            </script>
+            Request:<br />
+            <p id="request"></p><br />
+            Reply:<br />
+            <p id="reply"></p>
+            
         </div>
+
+        <script type="text/javascript">
+            function scheduleApi() {
+                const data = {
+                    graph: document.getElementById("graph").value
+                };
+
+                document.getElementById("request").innerHTML = JSON.stringify(data, null, 2);
+                document.getElementById("reply").innerHTML = "Scheduling!  Please Standby ...";
+
+                fetch('/api/apis/schedule', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data),
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log('Success:', data);
+                        document.getElementById("reply").innerHTML = JSON.stringify(data, undefined, 2);
+                    })
+                    .catch((error) => {
+                        console.error('Error:', error);
+                    })
+            }
+        </script>
+        
     </body>
 </html>

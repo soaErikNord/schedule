@@ -7,12 +7,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Stack;
 
 import com.eknord.schedule.data.Leg;
 
 public class Trips {
     private Map<String, Set<Leg>> directedGraph = new HashMap<>();
+
+    public Map<String, Set<Leg>> getDirectedGraph() {
+        return directedGraph;
+    }
+
+    public void setDirectedGraph(Map<String, Set<Leg>> directedGraph) {
+        this.directedGraph = directedGraph;
+    }
 
     public Trips() {
 
@@ -55,212 +62,9 @@ public class Trips {
                 System.out.println("(" + entry.getKey() + " ——> " + newLeg.getEndCity() + ")\t");
             }
         }
-
-        // The distance of the route A-B-C.
-        try {
-            System.out.print("Output #1: ");
-            System.out.println(getDistance("A", "B") + getDistance("B", "C"));
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The distance of the route A-D.
-        try {
-            System.out.print("Output #2: ");
-            System.out.println(getDistance("A", "D"));
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The distance of the route A-D-C.
-        try {
-            System.out.print("Output #3: ");
-            System.out.println(getDistance("A", "D") + getDistance("D", "C"));
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The distance of the route A-E-B-C-D.
-        try {
-            System.out.print("Output #4: ");
-            System.out.println(getDistance("A", "E") + getDistance("E", "B") + getDistance("B", "C") + getDistance("C", "D"));
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The distance of the route A-E-D.
-        try {
-            System.out.print("Output #5: ");
-            System.out.println(getDistance("A", "E") + getDistance("E", "D"));
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The number of trips starting at C and ending at C with a maximum of 3 stops.
-        // In the sample data below, there are two such trips: C-D-C (2 stops). and
-        // C-E-B-C (3 stops).
-        // TODO
-        try {
-            System.out.print("Output #6: ");
-            String src = "C";
-            String dest = "C";
-            boolean[] isVisited = new boolean[100];
-            ArrayList<String> pathList = new ArrayList<>();
-            ArrayList<String> allPaths = new ArrayList<>();
-    
-            // add source to path[]
-            pathList.add(src);
-    
-            // Call recursive utility
-            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
-
-            int routes = 0;
-            for (String s : allPaths) {
-                System.out.println("s: " + s);
-                if (s.length() == 12) {
-                    routes++;
-                }
-            }
-            System.out.println(routes);
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The number of trips starting at A and ending at C with exactly 4 stops. In the
-        // sample data below, there are three such trips: A to C (via B,C,D); A to C (via
-        // D,C,D); and A to C (via D,E,B).
-        try {
-            System.out.print("Output #7: ");
-            String src = "A";
-            String dest = "C";
-            boolean[] isVisited = new boolean[100];
-            ArrayList<String> pathList = new ArrayList<>();
-            ArrayList<String> allPaths = new ArrayList<>();
-    
-            // add source to path[]
-            pathList.add(src);
-    
-            // Call recursive utility
-            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
-
-            int routes = 0;
-            for (String s : allPaths) {
-                if (s.length() == 15) {
-                    routes++;
-                }
-            }
-            System.out.println(routes);
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The length of the shortest route (in terms of distance to travel) from A to C.
-        try {
-            System.out.print("Output #8: ");
-            String src = "A";
-            String dest = "C";
-            boolean[] isVisited = new boolean[100];
-            ArrayList<String> pathList = new ArrayList<>();
-            ArrayList<String> allPaths = new ArrayList<>();
-    
-            // add source to path[]
-            pathList.add(src);
-    
-            // Call recursive utility
-            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
-
-            String shortestRoute = "";
-            int distance = 0;
-            for (String s : allPaths) {
-                if (s.length() < shortestRoute.length() || shortestRoute.equalsIgnoreCase("")) {
-                    shortestRoute = s;
-                    shortestRoute = shortestRoute.replace(",", "")
-                        .replace("[", "")
-                        .replace("]", "")
-                        .replace(" ", "");
-                    int tempDistance = 0;
-                    for (int i = 0; i < shortestRoute.length() - 1; i++) {
-                        tempDistance += getDistance(String.valueOf(shortestRoute.charAt(i)), String.valueOf(shortestRoute.charAt(i+1)));
-                    }
-                    if (distance < tempDistance) {
-                        distance = tempDistance;
-                    }
-                    shortestRoute = s;
-                }
-            }
-            
-            System.out.println(distance);
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The length of the shortest route (in terms of distance to travel) from B to B.
-        // TODO
-        try {
-            System.out.print("Output #9: ");
-            String src = "B";
-            String dest = "B";
-            boolean[] isVisited = new boolean[100];
-            ArrayList<String> pathList = new ArrayList<>();
-            ArrayList<String> allPaths = new ArrayList<>();
-    
-            // add source to path[]
-            pathList.add(src);
-    
-            // Call recursive utility
-            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
-
-            String shortestRoute = "";
-            int distance = 0;
-            for (String s : allPaths) {
-                if (s.length() < shortestRoute.length() || shortestRoute.equalsIgnoreCase("")) {
-                    shortestRoute = s;
-                    shortestRoute = shortestRoute.replace(",", "")
-                        .replace("[", "")
-                        .replace("]", "")
-                        .replace(" ", "");
-                    int tempDistance = 0;
-                    for (int i = 0; i < shortestRoute.length() - 1; i++) {
-                        tempDistance += getDistance(String.valueOf(shortestRoute.charAt(i)), String.valueOf(shortestRoute.charAt(i+1)));
-                    }
-                    if (distance < tempDistance) {
-                        distance = tempDistance;
-                    }
-                    shortestRoute = s;
-                }
-            }
-            
-            System.out.println(distance);
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
-
-        // The number of different routes from C to C with a distance of less than 30. In
-        // the sample data, the trips are: CDC, CEBC, CEBCDC, CDCEBC, CDEBC,
-        // CEBCEBC, CEBCEBCEBC.
-        // TODO
-        try {
-            System.out.print("Output #10: ");
-
-            String src = "C";
-            String dest = "C";
-            boolean[] isVisited = new boolean[100];
-            ArrayList<String> pathList = new ArrayList<>();
-            ArrayList<String> allPaths = new ArrayList<>();
-    
-            // add source to path[]
-            pathList.add(src);
-    
-            // Call recursive utility
-            printAllPathsUtil(src, dest, isVisited, pathList, allPaths, 0);
-            
-            System.out.println(allPaths);
-        } catch (NumberFormatException nfe) {
-            System.out.println("NO SUCH ROUTE");
-        }
     }
 
-    private void printAllPathsUtil(String src, String dest, boolean[] isVisited, List<String> localPathList, List<String> allPaths, int loopNumber) {
+    public void printAllPathsUtil(String src, String dest, boolean[] isVisited, List<String> localPathList, List<String> allPaths, int loopNumber) {
  
         if (loopNumber > 0 && src.equalsIgnoreCase(dest)) {
             // System.out.println(localPathList);
@@ -292,24 +96,24 @@ public class Trips {
     }
  
 
-    private boolean isReachable(String src, String dest, int loopNumber, boolean[] discovered, Stack<String> path) {
-        discovered[src.charAt(0)] = true;
-        path.add(src);
-        if (loopNumber > 0 && src.equalsIgnoreCase(dest)) {
-            return true;
-        }
-        for (Leg l : directedGraph.get(src)) {
-            if (!discovered[l.getEndCity().charAt(0)]) {
-                if (isReachable(l.getEndCity(), dest, 1, discovered, path)) {
-                    return true;
-                }
-            }
-        }
-        path.pop();
-        return false;
-    }
+    // private boolean isReachable(String src, String dest, int loopNumber, boolean[] discovered, Stack<String> path) {
+    //     discovered[src.charAt(0)] = true;
+    //     path.add(src);
+    //     if (loopNumber > 0 && src.equalsIgnoreCase(dest)) {
+    //         return true;
+    //     }
+    //     for (Leg l : directedGraph.get(src)) {
+    //         if (!discovered[l.getEndCity().charAt(0)]) {
+    //             if (isReachable(l.getEndCity(), dest, 1, discovered, path)) {
+    //                 return true;
+    //             }
+    //         }
+    //     }
+    //     path.pop();
+    //     return false;
+    // }
 
-    private int getDistance(String startCity, String endCity) throws NumberFormatException {
+    public int getDistance(String startCity, String endCity) throws NumberFormatException {
         Iterator<Leg> legSet = directedGraph.get(startCity).iterator();
         while (legSet.hasNext()) {
             Leg newLeg = legSet.next();
