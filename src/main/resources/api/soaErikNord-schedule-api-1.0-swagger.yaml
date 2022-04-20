@@ -1,0 +1,81 @@
+openapi: 3.0.0
+info:
+  title: Schedule API
+  version: '1.0'
+  description: Implementation of a directed graph
+  contact:
+    name: Erik Nord
+    email: eknord@yahoo.com
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0
+servers:
+  - url: http://localhost:8080/api/
+    description: DEV
+paths:
+  /control-panel/schedule:
+    parameters: []
+    get:
+      summary: Process all rule sets for the directed graph
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/API'
+              examples:              
+                Schedule API:
+                  value:
+                    'Output #1:': '9'
+                    'Output #2:': '5'
+                    'Output #3:': '13'
+                    'Output #4:': '22'
+                    'Output #5:': NO SUCH ROUTE
+                    'Output #6:': '2'
+                    'Output #7:': '3'
+                    'Output #8:': '9'
+                    'Output #9:': '9'
+                    'Output #10:': '7'
+        '400':
+          description: Bad Request
+          content:
+            application/json:
+              schema: 
+                $ref: '#/components/schemas/Summary'
+      operationId: process-all-rules
+      description: Process All Rules
+      tags: []
+      parameters: []
+components:
+  schemas:
+    API:
+      title: API
+      type: object
+      description: Main attributes of an API
+      x-examples:
+        Example:
+          graph: AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7
+      properties:
+        graph:
+          type: string
+          example: AB5, BC4, CD8, DC8, DE6, AD5, CE2, EB3, AE7
+          description: Array of all of the directed graph elements
+    Summary:
+      description: ''
+      x-examples: {}
+      allOf:
+        - type: object
+          properties:
+            status:
+              type: string
+              description: Successful status message
+            error:
+              type: string
+              description: Unsuccessful error message
+          required:
+            - status
+        - $ref: '/components/schema/API'
+      title: ''
+  requestBodies: {}
+  parameters: {}
