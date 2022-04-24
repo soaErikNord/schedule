@@ -14,10 +14,20 @@ Microservice to show how to use directed graphs.  The directed graph will repres
 1) Clone repo with 'git clone https://github.com/soaErikNord/schedule.git'
 2) With a terminal change directory to schedule using 'cd schedule'
 3) Build and run the application using './gradlew bootRun'
-4) Open your favorite browser to [http://localhost:8080/api/control-panel/schedule](http://localhost:8080/api/control-panel/schedule)
-5) Enter the Graph values and click on the Calculate button.
-6) The result will display on the bottom of the page:
+4) Test as defined in [Test](#test)
+
+### Test
+1) Open your favorite browser to [http://localhost:8080/api/control-panel/schedule](http://localhost:8080/api/control-panel/schedule)
+2) Enter the Graph values and click on the Calculate button.
+3) The result will display on the bottom of the page:
 ![Example Page](examplePage.jpg)
+
+### Production Deployment
+We recommend for any kind of Production deployments that you would use a Containerized deployment.
+1) First build a deployable jar file './gradlew bootJar.
+2) Build the Docker image from the Dockerfile with 'docker build --build-arg JAR-FILE=build/libs/\*.jar -t eknord/directed-graph:1.0 .'
+3) Create the Docker container using 'docker run -d -p 8080:8080 eknord/directed-graph:1.0'
+4) Test as defined in [Test](#test)
 
 ## Rules
 
