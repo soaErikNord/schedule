@@ -26,7 +26,7 @@ Microservice to show how to use directed graphs.  The directed graph will repres
 We recommend for any kind of Production deployments that you would use a Containerized deployment.
 1) First build a deployable jar file './gradlew bootJar.
 2) Build the Docker image from the Dockerfile with 'docker build --build-arg JAR-FILE=build/libs/\*.jar -t eknord/directed-graph:1.0 .'
-3) Create the Docker container using 'docker run -d -p 8080:8080 eknord/directed-graph:1.0'
+3) Create the Docker container using 'docker run -d -name directedgraph -p 8080:8080 eknord/directed-graph:1.0'
 4) Test as defined in [Test](#test)
 
 ## Rules
